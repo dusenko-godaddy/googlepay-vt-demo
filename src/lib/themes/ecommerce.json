@@ -1,0 +1,51 @@
+{
+  "container": {
+    "flex-flow": "row wrap",
+    "justify-content": "normal",
+    "align-content": "center"
+  },
+  "rowFirstName": {
+    "width": "50%"
+  },
+  "rowLastName": {
+    "width": "50%"
+  },
+  "rowCardNumber": {
+    "width": "75%"
+  },
+  "rowCVV": {
+    "width": "35%"
+  },
+  "rowExpiration": {
+    "width": "25%"
+  },
+  "rowZip": {
+    "width": "65%"
+  },
+  "rowEmailAddress": {
+    "width": "100%",
+    "margin-bottom": "3px"
+  },
+  "rowNotes": {
+    "height": "50px",
+    "width": "100%"
+  },
+  "fieldWrapper": {
+    "base": "margin-bottom: 1rem;"
+  },
+  "inputWrapper": {
+    "base": "width: 80%; margin: 0 auto; border-color: grey; box-shadow: none; border-width: 0 0 1px 0; border-radius: 0px;",
+    "errored": "box-shadow: none; border-width: 0 0 1px 0; border-bottom: 1px solid maroon;",
+    "focused": "border-color: unset; box-shadow: unset; outline: none; outline-offset: 0px; border-bottom: 0px solid blue;"
+  },
+  "input": {
+    "base": "color: blue;",
+    "errored": "color: maroon;",
+    "cardNumber": "width: 30rem; border-bottom: 1px;",
+    "expiryDate": "text-transform: uppercase; width: 5rem; color: green",
+    "cvc": "width: 3rem;"
+  },
+  "errorText": {
+    "base": "font-size: 14px; color: maroon; position: absolute; margin-top: 60px; margin-left: 50px; font-family: Roboto, Open Sans, Segoe UI, sans-serif;"
+  }
+}

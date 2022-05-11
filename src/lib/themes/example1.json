@@ -1,0 +1,23 @@
+{
+  "container": {
+    "backgroundColor": "#d8f0f2"
+  },
+  "fieldWrapper": {
+    "base": "margin-bottom: 1rem;"
+  },
+  "inputWrapper": {
+    "base": "width: 80%; margin: 0 auto; border-color: white; box-shadow: none; border-width: 0 0 1px 0; border-radius: 0px;",
+    "errored": "box-shadow: none; border-width: 0 0 1px 0; border-bottom: 1px solid maroon;",
+    "focused": "border-color: unset; box-shadow: unset; outline: none; outline-offset: 0px; border-bottom: 0px solid blue;"
+  },
+  "input": {
+    "base": "color: green;",
+    "errored": "color: maroon;",
+    "cardNumber": "width: 30rem; border-bottom: 1px;",
+    "expiryDate": "text-transform: uppercase; width: 5rem;",
+    "cvc": "width: 3rem;"
+  },
+  "errorText": {
+    "base": "font-size: 14px; color: maroon; position: absolute; margin-top: 60px; margin-left: 50px; font-family: Roboto, Open Sans, Segoe UI, sans-serif;"
+  }
+}
