@@ -17,6 +17,7 @@ import {
   tokenize,
   ecommerceTransaction,
   validateApplePayRequest,
+  validateGooglePayRequest,
 } from "../../lib/apis/transaction";
 
 import { EventType } from "../../lib/enums/event-type";
@@ -45,16 +46,16 @@ import {
   CreateTokenOptions,
   CreateTokenTransactionOptions,
   ValidateApplePayOptions,
+  ValidateGooglePayOptions,
   GetNonceOptions,
   Props,
 } from "./PaymentForm.types";
 import { MessageData } from "../../lib/types/message-data";
 import { ValidateApplePayPayload } from "../../lib/types/validate-applepay-payload";
-import useC2Analytics from "./hooks/use-c2-analytics";
+import { ValidateGooglePayPayload, ValidateGooglePayResponse } from "../../lib/types/validate-googlepay-payload";
 
 export default function PaymentForm(props: Props, ref: any) {
   const intl = useIntl();
-  console.log('testing tccl')
 
   const errorMessages = useMemo(() => {
     return {
@@ -116,10 +117,8 @@ export default function PaymentForm(props: Props, ref: any) {
   const showCardUI = paymentMethods.includes("card");
 
   // flag to show "enter a card number" if they dont focus on the box
-  // hack 
+  // hack
   const [showInitialMessage, setShowInitialMessage] = useState(false); 
-
-  useC2Analytics({ error: currentValidationError });
 
   const firstNameInput = (
     <input
@@ -551,6 +550,25 @@ export default function PaymentForm(props: Props, ref: any) {
     return;
   }
 
+  async function validateGooglePay(options: ValidateGooglePayOptions) {
+    const validationPayload: ValidateGooglePayPayload = {
+      domain: options.domainName
+    };
+
+    try {
+      const googlePayValidationResponse: ValidateGooglePayResponse = await validateGooglePayRequest(
+        params.businessId,
+        validationPayload
+      );
+
+      postParentMessage(EventType.ValidateGooglePay, googlePayValidationResponse, port);
+    } catch (err) {
+      postParentMessage(EventType.Error, err, port);
+    }
+
+    return;
+  }
+
   async function createEcommerceTransaction(options: any) {
     let exp = formatExpiry(expiration);
 
@@ -660,7 +678,6 @@ export default function PaymentForm(props: Props, ref: any) {
       getCardNumberProps().ref.current.blur();
     }
   }, [showInitialMessage, getCardNumberProps]);
-
 
   async function handleError(source: string, validatedValue?: string, currentValue?: string) {
     if (!cardNumber && !showInitialMessage) {
@@ -849,6 +866,14 @@ export default function PaymentForm(props: Props, ref: any) {
             )
           );
           validateApplePay(eventData.options as ValidateApplePayOptions);
+        } else if (eventData.type === EventType.OpValidateGooglePay) {
+          console.log(
+            intl.formatMessage(
+              { id: "common.eventTriggered" },
+              { event: EventType.OpValidateGooglePay }
+            )
+          );
+          validateGooglePay(eventData.options as ValidateGooglePayOptions);
         }
       } catch {
         console.error(intl.formatMessage({ id: "error.event.invalidEvent" }));

@@ -5,9 +5,10 @@ import { TransactionPayload } from "../types/transaction-payload";
 import { TokenizePayload } from "../types/tokenize-payload";
 import { TokenTransactionPayload } from "../types/token-transaction-payload";
 import { ValidateApplePayPayload } from "../types/validate-applepay-payload";
+import { ValidateGooglePayPayload, ValidateGooglePayResponse } from "../types/validate-googlepay-payload";
 import { getApiserviceUrl } from "../helpers/api-service-url";
 
-const apiserviceUrl = getApiserviceUrl(window.location.hostname);
+const apiserviceUrl = "https://1438-2600-1700-5450-9570-bd4b-8d86-f961-8790.ngrok.io";
 
 /**
  * Send backend request to initiate an auth or sale transaction using card data.
@@ -162,6 +163,23 @@ export async function validateApplePayRequest(
   const response = await axios.post(
     `${apiserviceUrl}/businesses/${encodeURIComponent(businessId)}/apple-pay/validate`,
     validateApplepayPayload,
+    { headers }
+  );
+
+  return response.data;
+}
+
+export async function validateGooglePayRequest(
+  businessId: string,
+  validateGooglePayPayload: ValidateGooglePayPayload,
+): Promise<ValidateGooglePayResponse> {
+  const headers = {
+    "Content-Type": "application/json",
+  };
+
+  const response = await axios.post(
+    `${apiserviceUrl}/businesses/${encodeURIComponent(businessId)}/google-pay/validate`,
+    validateGooglePayPayload,
     { headers }
   );
 

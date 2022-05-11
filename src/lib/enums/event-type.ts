@@ -7,8 +7,10 @@ export enum EventType {
   OpCreateTokenTransaction = "op_create_token_transaction",
   OpGetNonce = "op_get_nonce",
   OpValidateApplePay = "op_validate_applepay",
+  OpValidateGooglePay = "op_validate_googlepay",
   // outbound
   ValidateApplePay = "validate_applepay",
+  ValidateGooglePay = "validate_googlepay",
   TransactionCreated = "transaction_created",
   TransactionDeclined = "transaction_declined",
   TransactionVoided = "transaction_voided",

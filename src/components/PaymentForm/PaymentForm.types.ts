@@ -44,6 +44,11 @@ export interface ValidateApplePayOptions {
   validationUrl?: string;
   displayName?: string;
 }
+
+export interface ValidateGooglePayOptions {
+  domainName: string;
+}
+
 export interface DisplayComponentsInterface {
   emailAddress?: boolean;
   firstName?: boolean;
