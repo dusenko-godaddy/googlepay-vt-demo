@@ -16,6 +16,24 @@ import { CurrencyCode } from "./lib/enums/currency-code";
 import { postParentMessage } from "./lib/helpers/post-parent-message";
 import { DEFAULT_LOCALE, getLocale, getMessages, getIntl } from "./lib/helpers/localization";
 
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAsRc95g5IU8tS41j7kGe_DnEhq4H0K-eM",
+  authDomain: "pay-vt-demo.firebaseapp.com",
+  projectId: "pay-vt-demo",
+  storageBucket: "pay-vt-demo.appspot.com",
+  messagingSenderId: "113314666536",
+  appId: "1:113314666536:web:ceb7b088a01427d6717d1d"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
 interface Props {
   urlParams: UrlParams;
 }
