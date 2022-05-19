@@ -17,7 +17,6 @@ import {
   tokenize,
   ecommerceTransaction,
   validateApplePayRequest,
-  validateGooglePayRequest,
 } from "../../lib/apis/transaction";
 
 import { EventType } from "../../lib/enums/event-type";
@@ -46,16 +45,17 @@ import {
   CreateTokenOptions,
   CreateTokenTransactionOptions,
   ValidateApplePayOptions,
-  ValidateGooglePayOptions,
   GetNonceOptions,
+  GetWalletNonceOptions,
   Props,
 } from "./PaymentForm.types";
 import { MessageData } from "../../lib/types/message-data";
 import { ValidateApplePayPayload } from "../../lib/types/validate-applepay-payload";
-import { ValidateGooglePayPayload, ValidateGooglePayResponse } from "../../lib/types/validate-googlepay-payload";
+import useC2Analytics from "./hooks/use-c2-analytics";
 
 export default function PaymentForm(props: Props, ref: any) {
   const intl = useIntl();
+  console.log('testing tccl')
 
   const errorMessages = useMemo(() => {
     return {
@@ -117,8 +117,10 @@ export default function PaymentForm(props: Props, ref: any) {
   const showCardUI = paymentMethods.includes("card");
 
   // flag to show "enter a card number" if they dont focus on the box
-  // hack
+  // hack 
   const [showInitialMessage, setShowInitialMessage] = useState(false); 
+
+  useC2Analytics({ error: currentValidationError });
 
   const firstNameInput = (
     <input
@@ -532,6 +534,43 @@ export default function PaymentForm(props: Props, ref: any) {
     }
   }
 
+  /**
+   * Get Wallet Nonce used to generate Collect V2 tokenization from wallet token.
+   * @param getWalletNonceOptions
+   */
+  async function getWalletNonce(getWalletNonceOptions: GetWalletNonceOptions) {
+    const noncePayload: NoncePayload = {
+      applicationId: params.applicationId,
+    };
+
+    if (!getWalletNonceOptions.applePayPaymentToken && !getWalletNonceOptions.googlePayPaymentToken) {
+      postParentMessage(EventType.Error, {
+        type: Errors.MissingFields,
+        error: intl.formatMessage({ id: "error.nonce.missingWalletToken" }),
+      }, port);
+
+      return;
+    }
+
+    if (getWalletNonceOptions.applePayPaymentToken) {
+      noncePayload.applePayPaymentToken = getWalletNonceOptions.applePayPaymentToken;
+    } else if (getWalletNonceOptions.googlePayPaymentToken) {
+      noncePayload.googlePayPaymentToken = getWalletNonceOptions.googlePayPaymentToken;
+    }
+
+    try {
+      const walletNonce: any = await getNonceRequest(
+        params.businessId,
+        noncePayload,
+        getWalletNonceOptions.ssid
+      );
+
+      postParentMessage(EventType.WalletNonce, walletNonce, port);
+    } catch (walletNonceError) {
+      postParentMessage(EventType.WalletNonceError, walletNonceError, port);
+    }
+  }
+
   async function validateApplePay(options: ValidateApplePayOptions) {
     const validationPayload: ValidateApplePayPayload = {
       domainName: options.domainName,
@@ -547,25 +586,6 @@ export default function PaymentForm(props: Props, ref: any) {
     } catch (err) {
       postParentMessage(EventType.Error, err, port);
     }
-    return;
-  }
-
-  async function validateGooglePay(options: ValidateGooglePayOptions) {
-    const validationPayload: ValidateGooglePayPayload = {
-      domain: options.domainName
-    };
-
-    try {
-      const googlePayValidationResponse: ValidateGooglePayResponse = await validateGooglePayRequest(
-        params.businessId,
-        validationPayload
-      );
-
-      postParentMessage(EventType.ValidateGooglePay, googlePayValidationResponse, port);
-    } catch (err) {
-      postParentMessage(EventType.Error, err, port);
-    }
-
     return;
   }
 
@@ -678,6 +698,7 @@ export default function PaymentForm(props: Props, ref: any) {
       getCardNumberProps().ref.current.blur();
     }
   }, [showInitialMessage, getCardNumberProps]);
+
 
   async function handleError(source: string, validatedValue?: string, currentValue?: string) {
     if (!cardNumber && !showInitialMessage) {
@@ -852,6 +873,8 @@ export default function PaymentForm(props: Props, ref: any) {
           createTokenTransaction(eventData.options as CreateTokenTransactionOptions);
         } else if (eventData.type === EventType.OpGetNonce) {
           getNonce(eventData.options as GetNonceOptions);
+        } else if (eventData.type === EventType.OpGetWalletNonce) {
+          getWalletNonce(eventData.options as GetWalletNonceOptions);
         } else if (eventData.type === EventType.Validated) {
         } else if (eventData.type === EventType.CreateEcommerceTransaction) {
           createEcommerceTransaction(eventData.options as any);
@@ -866,14 +889,6 @@ export default function PaymentForm(props: Props, ref: any) {
             )
           );
           validateApplePay(eventData.options as ValidateApplePayOptions);
-        } else if (eventData.type === EventType.OpValidateGooglePay) {
-          console.log(
-            intl.formatMessage(
-              { id: "common.eventTriggered" },
-              { event: EventType.OpValidateGooglePay }
-            )
-          );
-          validateGooglePay(eventData.options as ValidateGooglePayOptions);
         }
       } catch {
         console.error(intl.formatMessage({ id: "error.event.invalidEvent" }));

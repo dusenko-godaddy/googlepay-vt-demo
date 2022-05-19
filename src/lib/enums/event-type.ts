@@ -1,26 +1,27 @@
 export enum EventType {
-  // inbound
+  // Inbound from Poynt Collect
   Init = "init",
-  UpdateMessagePort = "update_message_port",
   OpCreateTransaction = "op_create_transaction",
   OpCreateToken = "op_create_token",
   OpCreateTokenTransaction = "op_create_token_transaction",
   OpGetNonce = "op_get_nonce",
+  OpGetWalletNonce = "op_get_wallet_nonce",
   OpValidateApplePay = "op_validate_applepay",
-  OpValidateGooglePay = "op_validate_googlepay",
-  // outbound
+  SiftSession = "set_sift_session",
+  CreateEcommerceTransaction = "create_ecommerce_transaction",
+
+  // Outbound to Poynt Collect
   ValidateApplePay = "validate_applepay",
-  ValidateGooglePay = "validate_googlepay",
   TransactionCreated = "transaction_created",
   TransactionDeclined = "transaction_declined",
   TransactionVoided = "transaction_voided",
   Error = "error",
+  WalletNonceError = "wallet_nonce_error",
   Ready = "ready",
   Nonce = "nonce",
+  WalletNonce = "wallet_nonce",
   Token = "token",
   Validated = "validated",
-  CreateEcommerceTransaction = "create_ecommerce_transaction",
   GetNonce = "get_nonce", // Deprecated
-  SiftSession = "set_sift_session",
   IFrameContentReady = "iframe_ready",
 }

@@ -39,16 +39,17 @@ export interface GetNonceOptions {
   googlePayPaymentToken?: GooglePayPaymentToken;
 }
 
+export interface GetWalletNonceOptions {
+  ssid?: string;
+  applePayPaymentToken?: ApplePayPaymentToken;
+  googlePayPaymentToken?: GooglePayPaymentToken;
+}
+
 export interface ValidateApplePayOptions {
   domainName: string;
   validationUrl?: string;
   displayName?: string;
 }
-
-export interface ValidateGooglePayOptions {
-  domainName: string;
-}
-
 export interface DisplayComponentsInterface {
   emailAddress?: boolean;
   firstName?: boolean;
