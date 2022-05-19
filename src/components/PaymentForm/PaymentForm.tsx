@@ -552,6 +552,20 @@ export default function PaymentForm(props: Props, ref: any) {
       return;
     }
 
+    noncePayload.verificationData = {
+      cardHolderBillingAddress: {
+        postalCode: getWalletNonceOptions.zip,
+        line1: getWalletNonceOptions.line1,
+        city: getWalletNonceOptions.city,
+        territory: getWalletNonceOptions.territory,
+        countryCode: getWalletNonceOptions.countryCode,
+      }
+    };
+
+    if (getWalletNonceOptions.line2) {
+      noncePayload.verificationData.cardHolderBillingAddress.line2 = getWalletNonceOptions.line2;
+    }
+
     if (getWalletNonceOptions.applePayPaymentToken) {
       noncePayload.applePayPaymentToken = getWalletNonceOptions.applePayPaymentToken;
     } else if (getWalletNonceOptions.googlePayPaymentToken) {

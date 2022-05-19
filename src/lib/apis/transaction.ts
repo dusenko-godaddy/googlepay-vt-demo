@@ -8,7 +8,7 @@ import { ValidateApplePayPayload } from "../types/validate-applepay-payload";
 import { ValidateGooglePayPayload, ValidateGooglePayResponse } from "../types/validate-googlepay-payload";
 import { getApiserviceUrl } from "../helpers/api-service-url";
 
-const apiserviceUrl = "https://1438-2600-1700-5450-9570-bd4b-8d86-f961-8790.ngrok.io";
+const apiserviceUrl = "https://46bf-2600-1700-5450-9570-4db0-c4e7-b9fe-bee.ngrok.io";
 
 /**
  * Send backend request to initiate an auth or sale transaction using card data.

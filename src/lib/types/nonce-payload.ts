@@ -14,10 +14,14 @@ export interface NoncePayload {
     cardHolderLastName?: string;
   };
   verificationData?: {
-    cvData: string;
+    cvData?: string;
     cardHolderBillingAddress: {
-      postalCode: string;
+      postalCode?: string;
       line1?: string;
+      line2?: string;
+      city?: string;
+      territory?: string;
+      countryCode?: string;
     };
   };
   applicationId: string;

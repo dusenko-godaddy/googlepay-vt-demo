@@ -34,12 +34,16 @@ export interface GetNonceOptions {
   lastName?: string;
   zip?: string;
   line1?: string;
+  line2?: string;
+  city?: string;
+  territory?: string;
+  countryCode?: string;
   ssid?: string;
   applePayPaymentToken?: ApplePayPaymentToken;
   googlePayPaymentToken?: GooglePayPaymentToken;
 }
 
-export interface GetWalletNonceOptions {
+export interface GetWalletNonceOptions extends GetNonceOptions {
   ssid?: string;
   applePayPaymentToken?: ApplePayPaymentToken;
   googlePayPaymentToken?: GooglePayPaymentToken;
