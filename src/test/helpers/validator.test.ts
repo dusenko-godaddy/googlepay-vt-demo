@@ -102,7 +102,7 @@ describe("Validator Helper Test Suite", () => {
     const rulesText = `rules: ${rules?.length ? rules.join(", ") : "no rules"}`
 
     it(`returns ${expected} (${missingFieldText}, ${invalidFieldText}, ${rulesText}, ${currentValidationErrorText})`, () => {
-      const result = validateForm(data, rules, currentValidationError, "en-US");
+      const result = validateForm(data, rules, currentValidationError, "en-US", null);
       expect(result).toBe(expected);
     });
   });

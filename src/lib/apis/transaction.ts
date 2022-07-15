@@ -8,7 +8,7 @@ import { ValidateApplePayPayload } from "../types/validate-applepay-payload";
 import { ValidateGooglePayPayload, ValidateGooglePayResponse } from "../types/validate-googlepay-payload";
 import { getApiserviceUrl } from "../helpers/api-service-url";
 
-const apiserviceUrl = "https://services-ci.poynt.net";
+const apiserviceUrl = getApiserviceUrl(window.location.hostname);
 
 /**
  * Send backend request to initiate an auth or sale transaction using card data.
@@ -64,6 +64,25 @@ export async function chargeToken(
       "api-key": apiKey,
     },
   });
+  return response.data;
+}
+
+/**
+ * Send backend request to initiate an auth or sale transaction using nonce.
+ * @param businessId
+ * @param tokenTransactionPayload
+ */
+export async function chargeNonce(
+  businessId: string,
+  tokenTransactionPayload: TokenTransactionPayload
+): Promise<any> {
+  const response = await axios.post("/poynt-collect/charge-nonce", tokenTransactionPayload, {
+    headers: {
+      "Content-Type": "application/json",
+      "business-id": businessId,
+    },
+  });
+  console.log('response', response);
   return response.data;
 }
 

@@ -29,6 +29,15 @@ export interface CreateTokenTransactionOptions {
   emailAddress?: string;
 }
 
+export interface CreateNonceTransactionOptions {
+  amount: number;
+  token: string;
+  authOnly?: boolean;
+  emailAddress?: string;
+  nonce: string;
+  businessId: string;
+}
+
 export interface GetNonceOptions {
   firstName?: string;
   lastName?: string;
@@ -39,12 +48,9 @@ export interface GetNonceOptions {
   territory?: string;
   countryCode?: string;
   ssid?: string;
-  applePayPaymentToken?: ApplePayPaymentToken;
-  googlePayPaymentToken?: GooglePayPaymentToken;
 }
 
 export interface GetWalletNonceOptions extends GetNonceOptions {
-  ssid?: string;
   applePayPaymentToken?: ApplePayPaymentToken;
   googlePayPaymentToken?: GooglePayPaymentToken;
 }
@@ -54,6 +60,11 @@ export interface ValidateApplePayOptions {
   validationUrl?: string;
   displayName?: string;
 }
+
+export interface ValidateGooglePayOptions {
+  domainName: string;
+}
+
 export interface DisplayComponentsInterface {
   emailAddress?: boolean;
   firstName?: boolean;
